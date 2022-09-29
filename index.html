@@ -34,7 +34,7 @@
           <div class="app__btn-text">Автор</div>
         </button>
         <button class="app__btn btn__sound">
-          <i class="fa fa-volume-up" aria-hidden="true"></i>
+          <i class="fa fa-volume-off" aria-hidden="true"></i>
           <div class="app__btn-text">Звук</div>
         </button>
       </div>
@@ -50,29 +50,29 @@
           <div class="app__body-top">
             <div class="app__card">
               <div class="app_card-text">Счёт</div>
-              <div class="app_card-count">0</div>
+              <div class="app_card-count">{{ totalScore }}</div>
             </div>
             <div class="app__card">
               <div class="app_card-text">Открыто рас</div>
-              <div class="app_card-count">0</div>
+              <div class="app_card-count">{{ openRaces }}</div>
             </div>
             <div class="app__card">
               <div class="app_card-text">Всего игр</div>
-              <div class="app_card-count">0</div>
+              <div class="app_card-count">{{ totalGames }}</div>
             </div>
             <div class="app__card">
               <div class="app_card-text">Любимая раса</div>
-              <div class="app_card-count">0</div>
+              <div class="app_card-count">{{ favoriteRace }}</div>
             </div>
           </div>
           <div class="app__body-middle">
-            <div class="app__result">
+            <div class="app__result" v-show="showResultRace[k]" v-for="(race, k) in results" @click="goToResult(k)">
               <div class="app__result-score">
                 <i class="fa fa-star" aria-hidden="true"></i>
-                <div class="app__result-count">150</div>
+                <div class="app__result-count">{{ race.points }}</div>
               </div>
-              <div class="app__result-name">Зерг</div>
-              <div class="app__result-amount">5</div>
+              <div class="app__result-name">{{ race.name }}</div>
+              <div class="app__result-amount">{{ totalGame[k] }}</div>
             </div>
           </div>
           <div class="app__body-bottom">
@@ -145,46 +145,7 @@
 
   <script src="./js/vue.js"></script>
   <script src="./js/const.js"></script>
-  <script src="./js/script.js">
-    // let app = new Vue({
-    //   el: '.main',
-    //   data: {
-    //     showMain: true,
-    //     showSocial: false,
-    //     showAchivments: false,
-    //     showQuestions: false,
-    //     showResult: false,
-    //     number: 0,
-    //     score: {
-    //       'zerg': 0,
-    //       'primal': 0,
-    //       'protoss': 0,
-    //       'taldarim': 0,
-    //       'terran': 0,
-    //       // 'infested': 0,
-    //       // 'hybrid': 0,
-    //     },
-    //     totalGame: localStorage.getItem('sc2TotalGame') ?
-    //       JSON.parse(localStorage.getItem('sc2TotalGame')) : {
-    //         'zerg': 0,
-    //         'primal': 0,
-    //         'protoss': 0,
-    //         'taldarim': 0,
-    //         'terran': 0,
-    //         'infested': 0,
-    //         'hybrid': 0,
-    //       },
-    //     totalGames: localStorage.getItem('sc2TotalGame') ?
-    //       localStorage.getItem('sc2TotalGame') : 0,
-    //     questions: questions,
-    //     results: results,
-    //     resultRace: 'infested',
-    //   },
-    //   methods: {
-
-    //   },
-    // })
-  </script>
+  <script src="./js/script.js"></script>
 </body>
 
 </html>

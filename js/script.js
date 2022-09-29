@@ -14,8 +14,8 @@ let app = new Vue({
       'taldarim': 0,
       'terran': 0,
     },
-    totalGame: localStorage.getItem('sc2TotalGames') ?
-      JSON.parse(localStorage.getItem('sc2TotalGames')) : {
+    totalGame: localStorage.getItem('sc2TotalGame') ?
+      JSON.parse(localStorage.getItem('sc2TotalGame')) : {
         'zerg': 0,
         'primal': 0,
         'protoss': 0,
@@ -89,7 +89,7 @@ let app = new Vue({
     },
     endGame() {
       this.totalGames++;
-      localStorage.setItem('sc2TotalGames', this.totalGames++)
+      localStorage.setItem('sc2TotalGames', this.totalGames)
       //Zerg
       if (this.score.zerg > this.score.protoss &&
         this.score.zerg > this.score.terran &&
@@ -139,4 +139,64 @@ let app = new Vue({
       localStorage.setItem('sc2TotalGame', JSON.stringify(this.totalGame))
     },
   },
+  computed: {
+    totalScore() {
+      let score = 0
+      for (let i in this.totalGame) {
+        score += (this.totalGame[i] * results[i].points)
+      }
+      return score
+    },
+    openRaces() {
+      let count = 0
+      for (let i in this.totalGame) {
+        if (this.totalGame[i] > 0) count++
+      }
+      return count
+    },
+    favoriteRace() {
+      let max = 'zerg'
+      for (let i in this.totalGame) {
+        if (this.totalGame[i] > this.totalGame[max]) {
+          max = i
+        }
+      }
+      return results[max].name
+    },
+    showResultRace() {
+      return {
+        'zerg': this.totalGame.zerg > 0 ? true : false,
+        'primal': this.totalGame.primal > 0 ? true : false,
+        'protoss': this.totalGame.protoss > 0 ? true : false,
+        'taldarim': this.totalGame.taldarim > 0 ? true : false,
+        'terran': this.totalGame.terran > 0 ? true : false,
+        'infested': this.totalGame.infested > 0 ? true : false,
+        'hybrid': this.totalGame.hybrid > 0 ? true : false,
+      }
+    }
+  },
+});
+
+let audio = new Audio('./../audio/soundtrack.mp3')
+let audio_btn = document.querySelector('.btn__sound')
+let audio_icon = document.querySelector('.btn__sound i')
+
+audio.muted = true;
+audio.autoplay = true;
+audio.volume = 0.1;
+
+audio.addEventListener('loadedmetadata', () => {
+  audio.currentTime = 0 + Math.random() * (audio.duration + 1 - 0)
+})
+
+audio_btn.addEventListener('click', () => {
+  if (audio.muted) {
+    audio.muted = false
+    audio_icon.classList.add('fa-volume-up')
+    audio_icon.classList.remove('fa-volume-off')
+  } else if (!audio.muted) {
+    audio.muted = true
+    audio_icon.classList.add('fa-volume-off')
+    audio_icon.classList.remove('fa-volume-up')
+  }
 })
